@@ -5,6 +5,7 @@ set mouse=a
 set colorcolumn=80
 syntax enable
 filetype plugin indent on
+set cursorline
 
 set background=dark
 colorscheme solarized
