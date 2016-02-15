@@ -1,7 +1,11 @@
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
 execute pathogen#infect()
-set t_Co=256
+"set t_Co=256
 "let g:solarized_termcolors=256
-set mouse=a
+"set mouse=a
 set colorcolumn=80
 syntax enable
 filetype plugin indent on
@@ -17,8 +21,10 @@ set expandtab
 set number
 set relativenumber
 set laststatus=2
-let g:airline_powerline_fonts = 1
-"set spell spelllang=en_us
+set spell spelllang=en_us
 
 set listchars=tab:▸\ ,eol:¬
+set list
 
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
