@@ -22,6 +22,7 @@ set number
 set relativenumber
 set laststatus=2
 set spell spelllang=en_us
+set clipboard=unnamed
 
 set listchars=tab:▸\ ,eol:¬
 set list
