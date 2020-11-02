@@ -1,0 +1,6 @@
+{
+    "clangd.path": "/usr/bin/clangd-10",
+    "python.jediEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true
+}
