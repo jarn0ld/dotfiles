@@ -1,8 +1,0 @@
-{
-    "clangd.path": "/home/julian/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/clangd",
-    "python.jediEnabled": false,
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.workspaceSymbols.tagFilePath": "${workspaceFolder}/tags"
-}
