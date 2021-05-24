@@ -49,11 +49,10 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 let g:completion_sorting = "none"
-let g:airline_powerline_fonts=1
 let g:gruvbox_guisp_fallback = "bg"
 let g:autopep8_on_save = 1
 let g:autopep8_disable_show_diff=1
-let g:vim_isort_map = ''
+let g:isort_command = 'isort'
 
 function FormatBuffer()
   if !empty(findfile('.clang-format', expand('%:p:h') . ';'))
@@ -71,22 +70,8 @@ augroup dtracker
     "autocmd BufWritePre *.cpp,*.h,*.hpp :call FormatBuffer()
 augroup END
 
-"function FormatPython()
-"    call CocAction('format')
-"    call CocAction('runCommand', 'python.sortImports')
-"endfunction
-
-"
-"augroup pythonformat
-"autocmd BufWritePost *.py :call FormatPython()
-"augroup END
-"
-
-"autocmd BufWritePre *.py Isort
-
 highlight Normal ctermbg=none
 highlight ColorColumn ctermbg=darkred
-
 
 call plug#begin()
 
@@ -98,8 +83,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'nvim-lua/completion-nvim'
 Plug 'tell-k/vim-autopep8'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'fisadev/vim-isort'
+Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
@@ -112,11 +96,6 @@ nnoremap <C-p> :Files<cr>
 "vnoremap p "0p
 
 "
-" Clang-format hook
-"
-map <C-K> :py3f ~/bin/clang-format.py<cr>
-
-"
 " Fast split switching
 "
 nnoremap <C-J> <C-W><C-J>
@@ -126,49 +105,6 @@ nnoremap <C-H> <C-W><C-H>
 
 nnoremap <leader>w f,wi<BS><CR><ESC>
 
-"
-" ctrp-p
-"
-"let g:ctrlp_by_filename = 1
-"let g:ctrlp_regexp = 0
-"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|venv)$'
-"set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
-
-"
-" jedi-vim
-"
-" no docstring popups
-" autocmd FileType python setlocal completeopt-=preview
-
-"
-" coc
-"
-"nmap <silent> <leader>t :CocCommand clangd.switchSourceHeader<CR>
-"xmap <silent> <leader>t :CocCommand clangd.switchSourceHeader<CR>
-" Formatting selected code.
-"xmap <leader>f  <Plug>(coc-format-selected)
-"nmap <leader>f  <Plug>(coc-format-selected)
-
-" add download status to vim's status line
-"set statusline+=\ %{coc#status()}
-
-" Symbol renaming.
-"nmap <leader>rn <Plug>(coc-rename)
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-"nmap <silent> [g <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"
-"
-"
-"
 lua << EOF
 
 local nvim_lsp = require('lspconfig')
@@ -242,11 +178,3 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- end
 
 EOF
-
-"
-" center curser after search
-"
-"nnoremap n nzz
-"nnoremap gd gdzz
-"nnoremap N Nzz
-"nnoremap * *zz
