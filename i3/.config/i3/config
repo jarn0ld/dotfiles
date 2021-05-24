@@ -172,3 +172,5 @@ bar {
 assign [class="Microsoft Teams - Preview"] 9
 assign [class="Gnome-terminal"] 1
 assign [class="Firefox"] 2
+
+exec --no-startup-id setxkbmap -option caps:swapescape
