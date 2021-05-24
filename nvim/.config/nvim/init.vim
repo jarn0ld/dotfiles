@@ -1,9 +1,10 @@
+set fileformat=unix
+set encoding=utf-8
+
 set guicursor=
 " Workaround some broken plugins which set guicursor indiscriminately.
 autocmd OptionSet guicursor noautocmd set guicursor=
 
-set fileformat=unix
-set encoding=utf-8
 set bs=indent,eol,start
 set noruler
 set number
@@ -64,7 +65,9 @@ endfunction
 
 augroup dtracker
     au BufRead,BufEnter */dtracker/radio/* set tabstop=2 shiftwidth=2 noexpandtab
+    au BufRead,BufEnter */dtracker/common/* set tabstop=2 shiftwidth=2 noexpandtab
     au BufRead,BufEnter */dtracker-*/radio/* set tabstop=2 shiftwidth=2 noexpandtab
+    au BufRead,BufEnter */dtracker-*/common/* set tabstop=2 shiftwidth=2 noexpandtab
     "autocmd BufWritePre *.cpp,*.h,*.hpp :call FormatBuffer()
 augroup END
 
@@ -197,8 +200,7 @@ local on_attach = function(client, bufnr)
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("v", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
   require'completion'.on_attach(client, bufnr)
@@ -244,7 +246,7 @@ EOF
 "
 " center curser after search
 "
-nnoremap n nzz
-nnoremap gd gdzz
-nnoremap N Nzz
-nnoremap * *zz
+"nnoremap n nzz
+"nnoremap gd gdzz
+"nnoremap N Nzz
+"nnoremap * *zz
