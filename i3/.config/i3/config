@@ -175,3 +175,6 @@ assign [class="Firefox"] 2
 
 exec --no-startup-id setxkbmap -option caps:swapescape
 exec --no-startup-id nm-applet
+
+bindsym Mod4+Shift+s systemctl suspend
+bindsym Mod4+Shift+p systemctl poweroff
