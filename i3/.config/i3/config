@@ -174,3 +174,4 @@ assign [class="Gnome-terminal"] 1
 assign [class="Firefox"] 2
 
 exec --no-startup-id setxkbmap -option caps:swapescape
+exec --no-startup-id nm-applet
