@@ -48,12 +48,6 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-let g:completion_sorting = "none"
-let g:gruvbox_guisp_fallback = "bg"
-let g:autopep8_on_save = 1
-let g:autopep8_disable_show_diff=1
-let g:isort_command = 'isort'
-
 function FormatBuffer()
   if !empty(findfile('.clang-format', expand('%:p:h') . ';'))
     let cursor_pos = getpos('.')
@@ -86,6 +80,12 @@ Plug 'tell-k/vim-autopep8'
 Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
+
+let g:autopep8_on_save = 1
+let g:autopep8_disable_show_diff = 1
+let g:completion_sorting = "none"
+let g:gruvbox_guisp_fallback = "bg"
+let g:isort_command = 'isort'
 
 colorscheme gruvbox
 
