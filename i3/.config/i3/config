@@ -176,5 +176,12 @@ assign [class="Firefox"] 2
 exec --no-startup-id setxkbmap -option caps:swapescape
 exec --no-startup-id nm-applet
 
-bindsym Mod4+Shift+s systemctl suspend
-bindsym Mod4+Shift+p systemctl poweroff
+bindsym Mod4+Shift+s exec --no-startup-id "i3lock"
+bindsym Mod4+Shift+p exec --no-startup-id "systemctl poweroff"
+
+bindsym Mod4+Ctrl+w exec firefox # web
+bindsym Mod4+Ctrl+c exec teams # chat / comms
+bindsym Mod4+Ctrl+d exec arandr # display
+
+bindcode 122 exec --no-startup-id amixer -q sset Master 3%-
+bindcode 123 exec --no-startup-id amixer -q sset Master 3%+
