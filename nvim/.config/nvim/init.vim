@@ -18,6 +18,9 @@ set list
 set colorcolumn=80
 set clipboard+=unnamedplus
 set complete=.,w,b,u,t
+set completeopt=menu,menuone,noselect
+" Avoid showing message extra message when using completion
+set shortmess+=c
 set completeopt-=preview
 set wildignore+=dumps
 set wildignore+=*.pyc
@@ -39,14 +42,10 @@ autocmd FileType python setlocal shiftwidth=4
 autocmd FileType python setlocal softtabstop=4
 autocmd FileType python setlocal expandtab
 
-autocmd FileType cpp setlocal shiftwidth=4
-autocmd FileType cpp setlocal softtabstop=4
+autocmd FileType cpp setlocal shiftwidth=2
+autocmd FileType cpp setlocal softtabstop=2
 autocmd FileType cpp setlocal expandtab
 
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-" Avoid showing message extra message when using completion
-set shortmess+=c
 
 function FormatBuffer()
   if !empty(findfile('.clang-format', expand('%:p:h') . ';'))
@@ -68,29 +67,41 @@ highlight Normal ctermbg=none
 highlight ColorColumn ctermbg=darkred
 
 call plug#begin()
-
 Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-fugitive'
-Plug 'neovim/nvim-lspconfig'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
-Plug 'nvim-lua/completion-nvim'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
+
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+"Plug 'nvim-lua/completion-nvim'
+
+Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+
 Plug 'tell-k/vim-autopep8'
 Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 
-let g:autopep8_on_save = 1
-let g:autopep8_disable_show_diff = 1
+let g:autopep8_on_save = 0
+let g:autopep8_disable_show_diff = 0
 let g:completion_sorting = "none"
 let g:gruvbox_guisp_fallback = "bg"
 let g:isort_command = 'isort'
 
 colorscheme gruvbox
 
-" fzf
-nnoremap <C-p> :Files<cr>
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope git_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
 
 "vnoremap y "0y
 "vnoremap p "0p
@@ -106,6 +117,42 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <leader>w f,wi<BS><CR><ESC>
 
 lua << EOF
+
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+    end,
+    },
+    mapping = {
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        },
+    sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    -- { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+    },
+    {
+        { name = 'buffer' },
+    })
+
+})
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local nvim_lsp = require('lspconfig')
 
@@ -140,7 +187,6 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("v", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
-  require'completion'.on_attach(client, bufnr)
 end
 
 -- Use a loop to conveniently both setup defined servers 
@@ -148,15 +194,9 @@ end
 
 nvim_lsp["pyright"].setup {
   on_attach = on_attach;
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = false
-      }
-    }
-  };
+  capabilities = capabilities;
 }
+
 nvim_lsp["jsonls"].setup {
     commands = {
       Format = {
@@ -166,6 +206,7 @@ nvim_lsp["jsonls"].setup {
       }
     }
 }
+
 nvim_lsp["clangd"].setup { on_attach = on_attach }
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
