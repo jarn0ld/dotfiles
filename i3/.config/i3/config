@@ -175,6 +175,7 @@ assign [class="Firefox"] 2
 
 exec --no-startup-id setxkbmap -option caps:swapescape
 exec --no-startup-id nm-applet
+exec --no-startup-id udiskie &
 
 bindsym Mod4+Shift+s exec --no-startup-id "i3lock"
 bindsym Mod4+Shift+p exec --no-startup-id "systemctl poweroff"
